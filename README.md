@@ -15,7 +15,7 @@
 
 
 
-#### residual_AIC_BIC_HCEST_v2.py, this scirpt is used to combine all fitting results (profiles in pdf and exchange parameters in csv)
+#### residual_AIC_BIC_HCEST_v2.py (python 3.6 needed for this script), this scirpt is used to combine all fitting results (profiles in pdf and exchange parameters in csv)
 #### the csv_output and csv_output_no_kex folders are the input, the assignment should be changed in line 246 in residual_AIC_BIC_HCEST_v2.py
 #### the output files are 
 #### 1. *_fit.pdf, which is the pdf containing all 1HCEST profiles assuming there is exchange;
