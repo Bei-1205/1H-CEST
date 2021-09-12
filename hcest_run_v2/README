@@ -1,0 +1,63 @@
+#### HCEST fitting& data analysis ####
+
+1. Make sure all scripts are saved in “~/SELOPE/“ 
+
+
+2. The initial input folders are “og_csv” and “og_csv_no_ex”
+
+
+3. Batch fitting assuming no exchange (Python2, on the computer cluster)
+    1. Go to “og_csv_no_ex”
+    2. Depending on which spectrometer you use, copy over either “batch_CEST_no_ex_multi_inho_fit_600.py” or “batch_CEST_no_ex_multi_inho_fit_700.py”
+    3. Modify parameters in batch_CEST_no_ex_multi_inho_fit_*.py
+        1. Check lf (larmor frequency) is correct
+        2. Check the inhomogeneity values (“inhomo”) are valid, the number of inhomogeneity should match the number of spin lock powers used in the data
+        3. Choose the inhomogeneity sampling size (‘number_inhomo_slps’), 40 is good for 600 data while 120 may be used for 700 data
+        4. Make sure pB, dWB and kexAB are fixed to be 0
+        5. Offset range and spin lock powers can be adjusted, see(['offset(hz)'] and ['slp(hz)'])
+        6. Save the edited script, run “python batch_CEST_no_ex_multi_inho_fit_600.py”, python2 is required.
+        7. "Fit_*" folders will be generated when the run is completed, the number of "Fit_*" should match the number of peaks you have in 1D spectrum.  Individual fitting results are saved in "Fit_*"
+
+
+4. Batch fitting assuming there is exchange (Python2)
+    1. Go to “og_csv”
+    2. Depending on which spectrometer you use, copy over either “batch_CEST_multi_inho_fit_600.py” or “batch_CEST_multi_inho_fit_700.py”
+    3. Modify the parameters in batch_CEST_no_ex_multi_inho_fit_*.py
+        1. Same as before in “og_csv_no_ex”
+        2. Note pB, kexAB and dwb are not fixed to 0
+    4. Save the edited script, run “python batch_CEST_multi_inho_fit_600.py”, python2 is required.
+    7. "Fit_*" folders will be generated when the run is completed, the number of "Fit_*" should match the number of peaks you have in 1D spectrum.  Individual fitting results are saved in "Fit_*"
+    8. To run individual fit, go to "Fit_*", modify "BMNS_params_multi_inho.txt" and "exec_inho_v2.sh" (change output folder name, the default is "test"), run "sbatch exec_inho_v2" to submit the job.
+
+
+5. Combining output files (profiles and fitparm.csv), making residual plots, and calculating AIC/BIC (Python3)
+    1. Go to the directory where “og_csv” and “og_csv_no_ex” are
+    2. Copy over “residual_AIC_BIC_HCEST_v3.py”
+    3. Inside “residual_AIC_BIC_HCEST_v3.py”, change peak assignment.
+    4. Run “python residual_AIC_BIC_HCEST_v3.py og_csv og_csv_no_ex [name] [600 or 700]”. [name] is how you want to name your output, [600 or 700] is the spectrometer used. Python3 is requrired.
+    5. 4 pdfs will be generated, *fit.pdf is the compilation of HCEST profiles assuming there is exchange. *nokex.pdf  is the compilation of HCEST profiles assuming no exchange. *combined.pdf is the combination of the first two pdf. “residual_*residual.pdf” is the residual plot + AIC/BIC values.
+    6. Inside og_csv and og_csv_no_kex, there is a csv called “*fitparm.csv”, which is the combination of fit parameters for all peaks.
+
+
+6. Make the master plot (Python3)
+    1. Go to the directory where “og_csv” and “og_csv_no_ex” are
+    2. Copy over “four_state_CEST_simulations.py” and “Plot_HCEST_and_residual_v2.py”
+    3. Inside “Plot_HCEST_and_residual_v2.py”, change the assignment. You may also want to change the delay time (default is 0.1), search for "tdelay = 0.1" (on line 80) and change 0.1 to the delay time you used.
+    4. Run “python Plot_HCEST_and_residual_v2.py og_csv og_csv_no_ex [name] [600 or 700]”
+    5. The output is the master plot name.pdf
+    6. Note you may want to change the number_inhomo_slps parameters in the simulation script (four_state_CEST_simulations.py, in line 375) based on your needs, the default is 20, which works fine for 600 1HCEST data.  120 may be needed for 700 1HCEST data due to large inhomogeneity
+
+
+7. Degeneracy test (Python2)
+    1. Go to the folder where you want to perform degeneracy test (e.g. Fit_1)
+    2. Copy over “HCEST_degeneracy_inhom_all_v2.py”
+    3. Modify parameters in HCEST_degeneracy_inhom_all_v2.py
+        1. There are three BM_file variables (1-3) in this script, make sure to change inhomo and number_inhomo_slps based on your data
+        2. Choose the range of pB, kex and dw you want to set for the degeneracy test.  The default setting for pb and kex is [0.1, 0.33, 1, 3, 10] and for dw is [-4, -3, -2, -1]
+        3. Save the changes made
+    4. Run “python HCEST_degeneracy_inhom_all_v2.py [600 or 700]”
+    5. Examples of output folders: test_dw_-1, test_dw_-2, test_dw_-3, test_dw_-4; test_kex_0.1, test_kex_0.33, test_kex_1, test_kex_3, test_kex_10; test_pb_0.1, test_pb_0.33, test_pb_1, test_pb_3, test_pb_10.
+    6. Make the degeneracy analysis plot
+        1. Copy over ‘Degen_plot_HCEST_v2.py’
+        2. Run “Degen_plot_HCEST_v2.py [name]”
+        3. The output pdf is name.pdf
