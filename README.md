@@ -13,8 +13,6 @@
 #### The plot_profile.py script is used to plot the 1HCEST data without fitting. To plot the result_1.csv data, use the command  "plot_profile.py result_1.csv"
 #### python 2.7 is required for the scripts described above
 
-
-
 #### residual_AIC_BIC_HCEST_v2.py (python 3.6 needed for this script), this scirpt is used to combine all fitting results (profiles in pdf and exchange parameters in csv)
 #### the csv_output and csv_output_no_kex folders are the input, the assignment should be changed in line 246 in residual_AIC_BIC_HCEST_v2.py
 #### the output files are 
@@ -25,3 +23,6 @@
 #### 5. residual_*_residual.pdf, the residual plot and AIC/BIC values for each 1HCEST profile
 
 
+### The folder hcest_run_v2 contains the most updated 1HCEST fitting/analysis scripts
+#### In this workflow, the fitting is performed on the Duke computer cluster
+#### the detailed protocol is provided in the README file inside the hcest_run_v2 folder
