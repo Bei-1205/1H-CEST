@@ -1,7 +1,7 @@
 # 1H-CEST
 ### Fitting scripts for 1H CEST data
 
-### Ref: Liu et al, (2021) "Rapid assessment of Watson-Crick to Hoogsteen exchange in unlabeled DNA duplexes using high-power SELOPE imino 1H CEST" Magnetic Resonance discussion
+### Ref: Liu et al, (2021) "Rapid assessment of Watson-Crick to Hoogsteen exchange in unlabeled DNA duplexes using high-power SELOPE imino 1H CEST" Magnetic Resonance 
 
 #### csv_output: the folder contains fitting results for 1HCEST data assuming no exchange
 #### csv_output_no_kex: the folder contains fitting results for 1HCEST data assuming there is exchange
